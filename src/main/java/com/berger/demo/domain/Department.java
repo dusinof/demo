@@ -1,6 +1,7 @@
 package com.berger.demo.domain;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Optional;
 
 @Entity
@@ -32,31 +33,31 @@ public class Department {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getInformation() {
         return information;
     }
 
-    public void setInformation(String information) {
-        this.information = information;
-    }
 
     public Users getOwner() {
         return owner;
     }
 
-    public void setOwner(Users owner) {
-        this.owner = owner;
-    }
 
     public Optional<Long> getParentId() {
         return Optional.ofNullable(parentId);
     }
 
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Department)) return false;
+        Department that = (Department) o;
+        return information.equals(that.information) && owner.equals(that.owner) && parentId.equals(that.parentId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(information, owner, parentId);
     }
 }

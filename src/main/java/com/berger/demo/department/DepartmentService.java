@@ -1,5 +1,6 @@
-package com.berger.demo;
+package com.berger.demo.department;
 
+import com.berger.demo.common.CommonService;
 import com.berger.demo.domain.Department;
 import com.berger.demo.domain.Users;
 import com.berger.demo.dto.DepartmentDto;
@@ -56,18 +57,17 @@ public class DepartmentService {
         Set<Long> parentOwners = new HashSet<>();
         getOwnerAndParentOwners(departmentId, parentOwners);
         if (parentOwners.contains(userId)) {
+            var parentOfDeletedDepartment = departmentRepository.findById(departmentId).flatMap(Department::getParentId);
             departmentRepository.deleteById(departmentId);
+            parentOfDeletedDepartment.ifPresent(id -> this.handleOrphan(id, departmentId));
             return ImmutableGenericResponse.of(String.format("Department: %s successfully deleted by userId: %s", departmentId, userId));
         }
         return ImmutableGenericResponse.of(String.format("Can not delete department. User Id:%s is not direct owner or parent owner", userId));
     }
 
-    /**
+    /*
      * Recursion function which will return Set of owners which are direct owners or
      * parent owners and for those users department might be modified.
-     *
-     * @param departmentId
-     * @param parents
      */
     private void getOwnerAndParentOwners(Long departmentId, Set<Long> parents) {
         departmentRepository.findById(departmentId).ifPresent(department -> {
@@ -77,5 +77,14 @@ public class DepartmentService {
             }
             parents.add(department.getOwner().getId()); // adding current Owner into Collection
         });
+    }
+
+
+    /*
+     * Now we skip validation if user can have correct rights or not to fix orphans.
+     * All orphan will inherit parent from the deleted department.
+     */
+    private void handleOrphan(Long parentDepartmentId, Long deletedDepartmentId) {
+        departmentRepository.fixOrphan(parentDepartmentId, deletedDepartmentId);
     }
 }

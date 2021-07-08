@@ -1,4 +1,4 @@
-package com.berger.demo;
+package com.berger.demo.users;
 
 import com.berger.demo.domain.Department;
 import com.berger.demo.domain.Users;

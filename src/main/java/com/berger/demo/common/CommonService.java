@@ -1,10 +1,9 @@
-package com.berger.demo;
+package com.berger.demo.common;
 
 import com.berger.demo.domain.Users;
 import com.berger.demo.exception.NotFoundException;
+import com.berger.demo.users.UsersRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class CommonService {

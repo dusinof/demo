@@ -1,5 +1,7 @@
 package com.berger.demo;
 
+import com.berger.demo.department.DepartmentService;
+import com.berger.demo.users.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -8,13 +10,13 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-public class InitializeService {
+public class InitializeDataService {
 
-    private static final Logger log = LoggerFactory.getLogger(InitializeService.class);
+    private static final Logger log = LoggerFactory.getLogger(InitializeDataService.class);
     private final DepartmentService departmentService;
     private final UserService userService;
 
-    public InitializeService(DepartmentService departmentService, UserService userService) {
+    public InitializeDataService(DepartmentService departmentService, UserService userService) {
         this.departmentService = departmentService;
         this.userService = userService;
     }

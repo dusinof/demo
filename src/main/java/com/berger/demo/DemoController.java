@@ -1,9 +1,11 @@
 package com.berger.demo;
 
+import com.berger.demo.department.DepartmentService;
 import com.berger.demo.dto.DepartmentDto;
 import com.berger.demo.dto.UserDto;
 import com.berger.demo.response.GenericResponse;
 import com.berger.demo.response.ImmutableGenericResponse;
+import com.berger.demo.users.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +19,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class DemoController {
 
     private static final Logger log = LoggerFactory.getLogger(DemoController.class);
-    private final InitializeService initializeService;
+    private final InitializeDataService initializeDataService;
     private final UserService userService;
     private final DepartmentService departmentService;
 
 
-    public DemoController(InitializeService initializeService, UserService userService, DepartmentService departmentService) {
-        this.initializeService = initializeService;
+    public DemoController(InitializeDataService initializeDataService, UserService userService, DepartmentService departmentService) {
+        this.initializeDataService = initializeDataService;
         this.userService = userService;
         this.departmentService = departmentService;
     }
@@ -32,8 +34,8 @@ public class DemoController {
     @PostMapping("/initialize")
     public GenericResponse<String> initialize() {
         log.info("Received request to import dummy Data.");
-        initializeService.importData();
-        return ImmutableGenericResponse.<String>of("Data successfully created.");
+        initializeDataService.importData();
+        return ImmutableGenericResponse.of("Data successfully created.");
     }
 
     @GetMapping("/users")
@@ -43,15 +45,15 @@ public class DemoController {
     }
 
     @DeleteMapping("/user/{userName}")
-    public GenericResponse<String> deleteUserByName(@PathVariable(required = true) String userName) {
+    public GenericResponse<String> deleteUserByName(@PathVariable String userName) {
         log.info("Received request to delete user: {}", userName);
-        return ImmutableGenericResponse.<String>of(userService.deleteUser(userName));
+        return ImmutableGenericResponse.of(userService.deleteUser(userName));
     }
 
     @DeleteMapping("/users")
     public GenericResponse<String> deleteAllUsers() {
         log.info("Received request to delete all users");
-        return ImmutableGenericResponse.<String>of(userService.deleteAllUsers());
+        return ImmutableGenericResponse.of(userService.deleteAllUsers());
     }
 
     @GetMapping("/departments")
@@ -61,7 +63,7 @@ public class DemoController {
     }
 
     @DeleteMapping("/department/{departmentId}")
-    public GenericResponse<String> deleteDepartment(@PathVariable(required = true) Long departmentId){
+    public GenericResponse<String> deleteDepartment(@PathVariable Long departmentId) {
         log.info("Received request to delete department Id");
         return departmentService.deleteDepartment(departmentId);
     }

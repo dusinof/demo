@@ -2,6 +2,7 @@ package com.berger.demo.domain;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Users {
@@ -27,19 +28,29 @@ public class Users {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
+    public Users(String name, List<Department> departments) {
+        this.name = name;
+        this.departments = departments;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getName() {
+        return name;
     }
 
     public List<Department> getDepartments() {
         return departments;
     }
 
-    public void setDepartments(List<Department> departments) {
-        this.departments = departments;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Users)) return false;
+        Users users = (Users) o;
+        return name.equals(users.name) && departments.equals(users.departments);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, departments);
     }
 }
