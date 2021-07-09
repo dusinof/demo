@@ -23,7 +23,7 @@ public class UserService {
     }
 
     @Transactional
-    public List<UserDto> getUsers() {
+    public List<UserDto> findAllUsers() {
         var users = usersRepository.findAll();
         return StreamSupport.stream(users.spliterator(), false)
                 .map(user -> ImmutableUserDto.of(user.getName(), getDepartmentOverviews(user.getDepartments())))

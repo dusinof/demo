@@ -1,6 +1,7 @@
 package com.berger.demo.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,7 +16,7 @@ public class Users {
     String name;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    List<Department> departments;
+    List<Department> departments = new ArrayList<>();
 
     public Users() {
     }

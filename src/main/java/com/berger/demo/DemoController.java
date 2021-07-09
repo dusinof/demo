@@ -41,7 +41,7 @@ public class DemoController {
     @GetMapping("/users")
     public List<UserDto> getUsers() {
         log.info("Received request to get all users in database.");
-        return userService.getUsers();
+        return userService.findAllUsers();
     }
 
     @DeleteMapping("/user/{userName}")
@@ -64,7 +64,7 @@ public class DemoController {
 
     @DeleteMapping("/department/{departmentId}")
     public GenericResponse<String> deleteDepartment(@PathVariable Long departmentId) {
-        log.info("Received request to delete department Id");
+        log.info("Received request to delete department Id:{}", departmentId);
         return departmentService.deleteDepartment(departmentId);
     }
 

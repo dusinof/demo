@@ -24,8 +24,8 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 
 
-	testImplementation 'org.codehouse.groovy:groovy'
-	testImplementation 'org.spockframework:spock-core'
+	testImplementation "org.spockframework:spock-core:2.0-groovy-3.0"
+	testImplementation "org.spockframework:spock-spring:2.0-groovy-3.0"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	annotationProcessor 'org.immutables:value:2.8.2'
 //	testImplementation 'com.h2database:h2:1.4.200'

@@ -29,7 +29,8 @@ public class DepartmentService {
 
     @Transactional
     public void createDepartment(String information, Users owner, Long parentId) {
-        departmentRepository.save(new Department(information, owner, parentId));
+        var department = departmentRepository.save(new Department(information, owner, parentId));
+        owner.getDepartments().add(department);
     }
 
     @Transactional
@@ -62,7 +63,8 @@ public class DepartmentService {
             parentOfDeletedDepartment.ifPresent(id -> this.handleOrphan(id, departmentId));
             return ImmutableGenericResponse.of(String.format("Department: %s successfully deleted by userId: %s", departmentId, userId));
         }
-        return ImmutableGenericResponse.of(String.format("Can not delete department. User Id:%s is not direct owner or parent owner", userId));
+        //TODO & FIXME Should rather throw exception, add ErrorHandling into Controller
+        return ImmutableGenericResponse.of(String.format("Can not delete department: %s. User Id: %s is not direct owner or parent owner", departmentId, userId));
     }
 
     /*
@@ -85,6 +87,6 @@ public class DepartmentService {
      * All orphan will inherit parent from the deleted department.
      */
     private void handleOrphan(Long parentDepartmentId, Long deletedDepartmentId) {
-        departmentRepository.fixOrphan(parentDepartmentId, deletedDepartmentId);
+       departmentRepository.fixOrphan(parentDepartmentId, deletedDepartmentId);
     }
 }
